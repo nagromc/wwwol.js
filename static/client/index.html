@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html ng-app="wwwol-client" lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>wwwol</title>
+  <meta name="description" content="Web application that helps you to list hosts on the same network, and wake them.">
+  <meta name="author" content="Morgan Courbet">
+
+  <script src="./client/angular.min.js"></script>
+  <script src="./client/controllers.js"></script>
+</head>
+
+<body>
+  <h1><code>wwwol</code></h1>
+
+  <div ng-controller="hostsList">
+    <p>Hosts available:</p>
+    <ul ng-repeat="host in hosts">
+      <li>{{host.hwaddr}} ({{host.name}})</li>
+  </ul>
+  </div>
+</body>
+</html>
