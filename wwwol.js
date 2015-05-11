@@ -90,3 +90,29 @@ server.post('/' + API_PREFIX + 'wakeup', function (req, res, next) {
         });
     });
 });
+
+/**
+ * Remove a host from database.
+ * @param {number} host's id
+ * @returns {boolean} true if the {@link Host} has been removed successfully.
+ * False otherwise.
+ */
+server.del('/' + API_PREFIX + 'host/:hostid', function (req, res, next) {
+    var hostid = parseInt(req.params.hostid, 10);
+    console.log(util.format('remove(hostid=%s)', hostid));
+
+    db.remove({id: hostid}, {}, function (err, numRemoved) {
+        var response = {"response": false};
+
+        if (err) {
+            console.error(util.format('Could not remove host [%s]', hostid));
+        } else {
+            console.log('Host [%d] has been removed', hostid);
+            response = {"response": true};
+        }
+
+        res.json(response);
+        next();
+    });
+});
+

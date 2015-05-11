@@ -28,5 +28,21 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
                 console.error('Error calling wakeup API');
             });
     };
+
+    $scope.remove = function(hostid) {
+        console.log('User clicked on remove button. hostid=' + hostid);
+        $http.delete(API_URL + 'host/' + hostid).
+            success(function(data) {
+                if (data.response) {
+                    console.log('Host [hostid=' + hostid + '] has been removed.');
+                    refreshHostList();
+                } else {
+                    console.log('Host [hostid=' + hostid + '] could not be removed.');
+                }
+            }).
+            error(function() {
+                console.error('Error calling remove host API');
+            });
+    };
 }]);
 
