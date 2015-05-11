@@ -26,12 +26,6 @@ var Host = function (id, hwaddr, name) {
     this.name = name;
 };
 
-// for test purposes
-var host1 = new Host(1, "00:11:22:aa:bb:cc", "host1.local"),
-    host2 = new Host(2, "11:22:33:bb:cc:dd", "host2.local"),
-    host3 = new Host(3, "22:33:44:cc:dd:ee", "host3.local");
-db.insert([host1, host2, host3]);
-
 
 
 var server = restify.createServer();
