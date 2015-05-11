@@ -53,7 +53,7 @@ server.get(/\/client\/?.*/, restify.serveStatic({
 /**
  * List the hosts available.
  *
- * @returns {Array} List of {@Host}.
+ * @returns {Array} List of {@link Host}.
  */
 server.get('/' + API_PREFIX + 'hosts', function (req, res, next) {
     db.find({}, function (err, docs) {
