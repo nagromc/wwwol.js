@@ -19,9 +19,9 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
         $http.post(API_URL + 'wakeup', {hostid: hostid}).
             success(function(data) {
                 if (data.response) {
-                    console.log('Host [hostid=' + hostid + '] has been switched on.');
+                    console.info('Host [hostid=' + hostid + '] has been switched on.');
                 } else {
-                    console.log('Host [hostid=' + hostid + '] could not be switched on.');
+                    console.error('Host [hostid=' + hostid + '] could not be switched on.');
                 }
             }).
             error(function() {
@@ -34,10 +34,10 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
         $http.delete(API_URL + 'host/' + hostid).
             success(function(data) {
                 if (data.response) {
-                    console.log('Host [hostid=' + hostid + '] has been removed.');
+                    console.info('Host [hostid=' + hostid + '] has been removed.');
                     refreshHostList();
                 } else {
-                    console.log('Host [hostid=' + hostid + '] could not be removed.');
+                    console.error('Host [hostid=' + hostid + '] could not be removed.');
                 }
             }).
             error(function() {

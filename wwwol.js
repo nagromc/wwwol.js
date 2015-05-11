@@ -38,7 +38,7 @@ var server = restify.createServer();
 server.use(restify.bodyParser());
 
 server.listen(LISTENING_PORT, function () {
-    console.log(util.format('Server listening on port %d', LISTENING_PORT));
+    console.info(util.format('Server listening on port %d', LISTENING_PORT));
 });
 
 /**
@@ -81,7 +81,7 @@ server.post('/' + API_PREFIX + 'wakeup', function (req, res, next) {
             if (error) {
                 console.error(util.format('Could not switch on host [%s].', docs.hwaddr));
             } else {
-                console.log(util.format('Host [%s] has been switched on.', docs.hwaddr));
+                console.info(util.format('Host [%s] has been switched on.', docs.hwaddr));
                 response = {"response": true};
             }
 
@@ -107,7 +107,7 @@ server.del('/' + API_PREFIX + 'host/:hostid', function (req, res, next) {
         if (err) {
             console.error(util.format('Could not remove host [%s]', hostid));
         } else {
-            console.log('Host [%d] has been removed', hostid);
+            console.info('Host [%d] has been removed', hostid);
             response = {"response": true};
         }
 
