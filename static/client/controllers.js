@@ -44,5 +44,20 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
                 console.error('Error calling remove host API');
             });
     };
-}]);
 
+    $scope.add = function(hwaddr, hostname) {
+        console.log('User clicked on add button. hwaddr=' + hwaddr + ', hostname=' + hostname);
+        $http.post(API_URL + 'host', {"hwaddr": hwaddr, "hostname": hostname}).
+            success(function(data) {
+                if (data.response) {
+                    console.info('Host [hwaddr=' + hwaddr + ', hostname=' + hostname + '] has been added.');
+                    refreshHostList();
+                } else {
+                    console.error('Host [hwaddr=' + hwaddr + ', hostname=' + hostname + '] could not be added.');
+                }
+            }).
+            error(function() {
+                console.error('Error calling add host API');
+            });
+    };
+}]);

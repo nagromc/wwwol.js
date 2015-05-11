@@ -6,6 +6,7 @@ var restify = require('restify');
 var util = require('util');
 var Datastore = require('nedb');
 var wol = require('wake_on_lan');
+var isMac = require('is-mac');
 
 
 
@@ -116,3 +117,35 @@ server.del('/' + API_PREFIX + 'host/:hostid', function (req, res, next) {
     });
 });
 
+/**
+ * Add a {@link Host} into database.
+ * @param {string} host's hardware address
+ * @returns {boolean} true if the {@link Host} has been added successfully.
+ * False otherwise.
+ */
+server.post('/' + API_PREFIX + 'host', function (req, res, next) {
+    var hwaddr = req.params.hwaddr;
+    var hostname = req.params.hostname;
+    console.log(util.format('addHost(hwaddr=%s;hostname=%s)', hwaddr, hostname));
+
+    if (!isMac(hwaddr)) {
+        throw new Error(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
+    }
+
+    var response = {"response": false};
+    var hostToAdd = new Host(0, hwaddr, hostname);
+
+    db.insert([hostToAdd], function (err, docs) {
+        var response = {"response": false};
+
+        if (err) {
+            console.error(util.format('Could not add new host [%s].', JSON.stringify(hostToAdd)));
+        } else {
+            console.info(util.format('Host [%s] has been added.', JSON.stringify(hostToAdd)));
+            response = {"response": true};
+        }
+
+    res.json(response);
+    next();
+    });
+});

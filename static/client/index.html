@@ -16,14 +16,22 @@
     <h1><code>wwwol</code></h1>
 
     <div ng-controller="hostsList">
-        <p>Hosts available:</p>
-        <select ng-model="selectedHost">
-            <option ng-repeat="host in hosts" value="{{host.id}}">
-                {{host.hwaddr}} ({{host.name}})
-            </option>
-        </select>
-        <button ng-click="wakeup(selectedHost)">Wake up</button>
-        <button ng-click="remove(selectedHost)">Remove</button>
+        <div>
+            <p>Hosts available:</p>
+            <select ng-model="selectedHost">
+                <option ng-repeat="host in hosts" value="{{host.id}}">
+                    {{host.hwaddr}} ({{host.name}})
+                </option>
+            </select>
+            <button ng-click="wakeup(selectedHost)">Wake up</button>
+            <button ng-click="remove(selectedHost)">Remove</button>
+        </div>
+        <div>
+            <p>Add a host:</p>
+            <input type="text" ng-model="hwaddr" placeholder="Address (XX:XX:XX:XX:XX:XX)" pattern="([\da-fA-F]{2}:){5}[\da-fA-F]{2}" maxlength="17"/>
+            <input type="text" ng-model="hostname" placeholder="Hostname (optional)"/>
+            <button ng-click="add(hwaddr, hostname)">Add</button>
+        </div>
     </div>
 </body>
 </html>
