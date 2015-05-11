@@ -17,9 +17,12 @@
 
     <div ng-controller="hostsList">
         <p>Hosts available:</p>
-        <ul ng-repeat="host in hosts">
-            <li>{{host.hwaddr}} ({{host.name}})</li>
-        </ul>
+        <select ng-model="selectedHost">
+            <option ng-repeat="host in hosts" value="{{host.id}}">
+                {{host.hwaddr}} ({{host.name}})
+            </option>
+        </select>
+        <button ng-click="wakeup(selectedHost)">Wake up</button>
     </div>
 </body>
 </html>

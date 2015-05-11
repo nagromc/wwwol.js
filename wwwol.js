@@ -5,6 +5,7 @@
 var restify = require('restify');
 var util = require('util');
 var Datastore = require('nedb');
+var wol = require('wake_on_lan');
 
 
 
@@ -34,6 +35,8 @@ db.insert([host1, host2, host3]);
 
 var server = restify.createServer();
 
+server.use(restify.bodyParser());
+
 server.listen(LISTENING_PORT, function () {
     console.log(util.format('Server listening on port %d', LISTENING_PORT));
 });
@@ -58,5 +61,32 @@ server.get('/' + API_PREFIX + 'hosts', function (req, res, next) {
 
         res.json(hosts);
         next();
+    });
+});
+
+/**
+ * Wake up a host.
+ * @param {number} host's id
+ * @returns {boolean} true if the magic packet has been sent successfully. False
+ * otherwise.
+ */
+server.post('/' + API_PREFIX + 'wakeup', function (req, res, next) {
+    var hostid = parseInt(req.params.hostid, 10);
+    console.log(util.format('wakeup(hostid=%s)', hostid));
+
+    db.findOne({id: hostid}, function (err, docs) {
+        var response = {"response": false};
+
+        wol.wake(docs.hwaddr, {}, function(error) {
+            if (error) {
+                console.error(util.format('Could not switch on host [%s].', docs.hwaddr));
+            } else {
+                console.log(util.format('Host [%s] has been switched on.', docs.hwaddr));
+                response = {"response": true};
+            }
+
+            res.json(response);
+            next();
+        });
     });
 });
