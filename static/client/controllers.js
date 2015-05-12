@@ -61,3 +61,4 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
             });
     };
 }]);
+
