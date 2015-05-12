@@ -19,7 +19,7 @@
         <div>
             <p>Hosts available:</p>
             <select ng-model="selectedHost">
-                <option ng-repeat="host in hosts" value="{{host.id}}">
+                <option ng-repeat="host in hosts" value="{{host._id}}">
                     {{host.hwaddr}} ({{host.name}})
                 </option>
             </select>

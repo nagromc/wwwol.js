@@ -20,8 +20,7 @@ var db = new Datastore({ filename: DB_PATH, autoload: true });
  * A host is represented by a hardware address and a name.
  * @class
  */
-var Host = function (id, hwaddr, name) {
-    this.id = id;
+var Host = function (hwaddr, name) {
     this.hwaddr = hwaddr;
     this.name = name;
 };
@@ -61,15 +60,15 @@ server.get('/' + API_PREFIX + 'hosts', function (req, res, next) {
 
 /**
  * Wake up a host.
- * @param {number} host's id
+ * @param {string} host's id
  * @returns {boolean} true if the magic packet has been sent successfully. False
  * otherwise.
  */
 server.post('/' + API_PREFIX + 'wakeup', function (req, res, next) {
-    var hostid = parseInt(req.params.hostid, 10);
+    var hostid = req.params.hostid;
     console.log(util.format('wakeup(hostid=%s)', hostid));
 
-    db.findOne({id: hostid}, function (err, docs) {
+    db.findOne({_id: hostid}, function (err, docs) {
         var response = {"response": false};
 
         wol.wake(docs.hwaddr, {}, function(error) {
@@ -88,21 +87,21 @@ server.post('/' + API_PREFIX + 'wakeup', function (req, res, next) {
 
 /**
  * Remove a host from database.
- * @param {number} host's id
+ * @param {string} host's id
  * @returns {boolean} true if the {@link Host} has been removed successfully.
  * False otherwise.
  */
 server.del('/' + API_PREFIX + 'host/:hostid', function (req, res, next) {
-    var hostid = parseInt(req.params.hostid, 10);
+    var hostid = req.params.hostid;
     console.log(util.format('remove(hostid=%s)', hostid));
 
-    db.remove({id: hostid}, {}, function (err, numRemoved) {
+    db.remove({_id: hostid}, {}, function (err, numRemoved) {
         var response = {"response": false};
 
         if (err) {
             console.error(util.format('Could not remove host [%s]', hostid));
         } else {
-            console.info('Host [%d] has been removed', hostid);
+            console.info('Host [%s] has been removed', hostid);
             response = {"response": true};
         }
 
@@ -127,11 +126,10 @@ server.post('/' + API_PREFIX + 'host', function (req, res, next) {
     }
 
     var response = {"response": false};
-    var hostToAdd = new Host(0, hwaddr, hostname);
+    var hostToAdd = new Host(hwaddr, hostname);
+
 
     db.insert([hostToAdd], function (err, docs) {
-        var response = {"response": false};
-
         if (err) {
             console.error(util.format('Could not add new host [%s].', JSON.stringify(hostToAdd)));
         } else {
