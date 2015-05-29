@@ -1,4 +1,4 @@
-var API_URL = 'api/';
+var API_URL = '/api/';
 
 var wwwolClient = angular.module('wwwol-client', []);
 
