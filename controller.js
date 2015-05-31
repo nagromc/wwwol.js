@@ -98,8 +98,7 @@ exports.remove = function (req, res, next) {
 /**
  * Wake up a host.
  * @param {string} host's id
- * @returns {boolean} true if the magic packet has been sent successfully. False
- * otherwise.
+ * @returns {boolean} true if the magic packet has been sent successfully.
  */
 exports.wakeup = function (req, res, next) {
     var hostid = req.params.hostid;
