@@ -3,18 +3,11 @@
 "use strict";
 
 var util = require('util');
-var wol = require('wake_on_lan');
-var isMac = require('is-mac');
+var services = require('./services.js');
+// TODO db should be in services.js
 var db = require('./db.js');
 
-/**
- * A host is represented by a hardware address and a name.
- * @class
- */
-var Host = function (hwaddr, name) {
-    this.hwaddr = hwaddr;
-    this.name = name;
-};
+
 
 /**
  * Send a message to the client in case of error by the caller.
@@ -106,38 +99,6 @@ exports.wakeupHost = function (req, res, next) {
     var hostid = req.params.hostid;
     console.log('wakeupHost(hostid=[%s])', hostid);
 
-    var findHwaddr = function () {
-        return new Promise(function (resolve, reject) {
-            db.findOne({'_id': hostid}, function (error, doc) {
-                if (error) {
-                    return reject('Could not execute findOne statement: ', error);
-                }
-                if (doc === null) {
-                    return reject(util.format('Could not find doc with hostid=[%s]', hostid));
-                }
-
-                console.log('Host found hwaddr=[%s]', doc.hwaddr);
-
-                return resolve(doc.hwaddr);
-            });
-        });
-    };
-
-    var wakeupHost = function (hwaddr) {
-        return new Promise(function (resolve, reject) {
-            console.log('Trying to wake up host [%s]', hwaddr);
-
-            wol.wake(hwaddr, function (error) {
-                if (error) {
-                    return reject(util.format('Could not switch on host [%s].', hwaddr));
-                }
-
-                console.info('Host [%s] has been switched on.', hwaddr);
-                return resolve(hwaddr);
-            });
-        });
-    };
-
     var sendResponse = function (hwaddr) {
         return new Promise(function (resolve, reject) {
             console.log('Sending response of wakeup to client');
@@ -146,7 +107,7 @@ exports.wakeupHost = function (req, res, next) {
         });
     };
 
-    findHwaddr().then(wakeupHost).then(sendResponse).catch(function (error) {
+    services.findHwaddr(hostid).then(services.wakeupHost).then(sendResponse).catch(function (error) {
         handleError(error, res);
     });
 };
