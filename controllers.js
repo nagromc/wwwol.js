@@ -4,8 +4,6 @@
 
 var util = require('util');
 var services = require('./services.js');
-// TODO db should be in services.js
-var db = require('./db.js');
 
 
 
