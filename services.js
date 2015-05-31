@@ -11,6 +11,23 @@ var model = require('./model.js');
 
 
 /**
+ * Promise to find added {@link Host}
+ * @returns {object} The list of all {@link Host}
+ */
+exports.findHosts = function () {
+    return new Promise(function (resolve, reject) {
+        db.find({}, function (error, doc) {
+            if (error) {
+                return reject('Could not execute find statement: ', error);
+            }
+
+            console.log('%d hosts found', doc.length);
+            return resolve(doc);
+        });
+    });
+};
+
+/**
  * Promise to find a hardware address into database
  * @param {string} The host's id
  * @returns {string} The hardware address found

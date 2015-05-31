@@ -38,11 +38,10 @@ var handleError = function (error, res) {
 exports.listHosts = function (req, res, next) {
     console.log('listHosts()');
 
-    db.find({}, function (err, docs) {
-        var hosts = docs;
-
-        res.json(hosts);
-        next();
+    services.findHosts().then(function (hosts) {
+        sendResponse(hosts, res, next);
+    }).catch(function (error) {
+        handleError(error, res);
     });
 };
 
