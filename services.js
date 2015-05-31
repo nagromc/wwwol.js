@@ -54,6 +54,24 @@ exports.addHost = function (hwaddr, name) {
 };
 
 /**
+ * Promise to remove a {@link Host} from database
+ * @param {string} hwaddr - the host's hardware address
+ * @returns {boolean} true if the {@link Host} has been removed
+ */
+exports.removeHost = function (hostid) {
+    return new Promise(function (resolve, reject) {
+        db.remove({'_id': hostid}, {}, function (err, numRemoved) {
+            if (err) {
+                return reject(util.format('Could not remove host [%s]', hostid));
+            }
+
+            console.info('Host [%s] has been removed', hostid);
+            return resolve(true);
+        });
+    });
+};
+
+/**
  * Promise to find a hardware address into database
  * @param {string} The host's id
  * @returns {string} The hardware address found

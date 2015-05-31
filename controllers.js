@@ -74,18 +74,10 @@ exports.removeHost = function (req, res, next) {
     var hostid = req.params.hostid;
     console.log('removeHost(hostid=[%s])', hostid);
 
-    db.remove({'_id': hostid}, {}, function (err, numRemoved) {
-        var response = {"response": false};
-
-        if (err) {
-            console.error('Could not remove host [%s]', hostid);
-        } else {
-            console.info('Host [%s] has been removed', hostid);
-            response = {"response": true};
-        }
-
-        res.json(response);
-        next();
+    services.removeHost(hostid).then(function (result) {
+        sendResponse(result, res, next);
+    }).catch(function (error) {
+        handleError(error, res);
     });
 };
 
