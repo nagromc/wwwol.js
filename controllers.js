@@ -10,6 +10,18 @@ var db = require('./db.js');
 
 
 /**
+ * Send the controller's response to the client
+ * @param {object} jsonResponse - a JSON object to send to the client
+ * @param {object} res - the HTTP response
+ * @param {requestCallback} next
+ */
+var sendResponse = function (jsonResponse, res, next) {
+    console.log('Sending response to client: [%s]', JSON.stringify(jsonResponse));
+    res.json(jsonResponse);
+    next();
+};
+
+/**
  * Send a message to the client in case of error by the caller.
  */
 var handleError = function (error, res) {
@@ -99,15 +111,9 @@ exports.wakeupHost = function (req, res, next) {
     var hostid = req.params.hostid;
     console.log('wakeupHost(hostid=[%s])', hostid);
 
-    var sendResponse = function (hwaddr) {
-        return new Promise(function (resolve, reject) {
-            console.log('Sending response of wakeup to client');
-            res.json(true);
-            next();
-        });
-    };
-
-    services.findHwaddr(hostid).then(services.wakeupHost).then(sendResponse).catch(function (error) {
+    services.findHwaddr(hostid).then(services.wakeupHost).then(function () {
+        sendResponse(true, res, next);
+    }).catch(function (error) {
         handleError(error, res);
     });
 };
