@@ -51,7 +51,7 @@ exports.add = function (req, res, next) {
         response = {"response": false},
         hostToAdd = new Host(hwaddr, hostname);
 
-    console.log(util.format('addHost(hwaddr=%s;hostname=%s)', hwaddr, hostname));
+    console.log('addHost(hwaddr=%s;hostname=%s)', hwaddr, hostname);
 
     if (!isMac(hwaddr)) {
         throw new Error(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
@@ -59,9 +59,9 @@ exports.add = function (req, res, next) {
 
     db.insert([hostToAdd], function (err, docs) {
         if (err) {
-            console.error(util.format('Could not add new host [%s].', JSON.stringify(hostToAdd)));
+            console.error('Could not add new host [%s].', JSON.stringify(hostToAdd));
         } else {
-            console.info(util.format('Host [%s] has been added.', JSON.stringify(hostToAdd)));
+            console.info('Host [%s] has been added.', JSON.stringify(hostToAdd));
             response = {"response": true};
         }
 
@@ -78,13 +78,13 @@ exports.add = function (req, res, next) {
  */
 exports.remove = function (req, res, next) {
     var hostid = req.params.hostid;
-    console.log(util.format('remove(hostid=%s)', hostid));
+    console.log('remove(hostid=%s)', hostid);
 
     db.remove({'_id': hostid}, {}, function (err, numRemoved) {
         var response = {"response": false};
 
         if (err) {
-            console.error(util.format('Could not remove host [%s]', hostid));
+            console.error('Could not remove host [%s]', hostid);
         } else {
             console.info('Host [%s] has been removed', hostid);
             response = {"response": true};
@@ -103,7 +103,7 @@ exports.remove = function (req, res, next) {
  */
 exports.wakeup = function (req, res, next) {
     var hostid = req.params.hostid;
-    console.log(util.format('wakeup(hostid=[%s])', hostid));
+    console.log('wakeup(hostid=[%s])', hostid);
 
     var findHwaddr = function() {
         return new Promise(function (resolve, reject) {
@@ -115,7 +115,7 @@ exports.wakeup = function (req, res, next) {
                     return reject(util.format('Could not find doc with hostid=[%s]', hostid));
                 }
 
-                console.log(util.format('Host found hwaddr=[%s]', doc.hwaddr));
+                console.log('Host found hwaddr=[%s]', doc.hwaddr);
 
                 return resolve(doc.hwaddr);
             });
@@ -124,14 +124,14 @@ exports.wakeup = function (req, res, next) {
 
     var wakeupHost = function (hwaddr) {
         return new Promise(function (resolve,reject) {
-            console.log(util.format('Trying to wake up host [%s]', hwaddr));
+            console.log('Trying to wake up host [%s]', hwaddr);
 
             wol.wake(hwaddr, function (error) {
                 if (error) {
                     return reject(util.format('Could not switch on host [%s].', hwaddr));
                 }
 
-                console.info(util.format('Host [%s] has been switched on.', hwaddr));
+                console.info('Host [%s] has been switched on.', hwaddr);
                 return resolve(hwaddr);
             });
         });

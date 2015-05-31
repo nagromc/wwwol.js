@@ -12,7 +12,7 @@ var server = restify.createServer();
 server.use(restify.bodyParser());
 
 server.listen(config.listeningPort, function () {
-    console.info(util.format('Server listening on port %d', config.listeningPort));
+    console.info('Server listening on port %d', config.listeningPort);
 });
 
 module.exports.server = server;
