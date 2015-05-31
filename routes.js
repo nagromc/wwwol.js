@@ -5,14 +5,15 @@
 var restify = require('restify');
 var hostController = require('./controller.js');
 var server = module.parent.exports.server;
+var config = require('./config.js');
 
-var API_PREFIX = 'api/';
+
 
 /**
  * Redirect URL '/' to '/client'
  */
 server.get('/', function (req, res, next) {
-    res.header('Location', '/client');
+    res.header('Location', '/' + config.client.urlPrefix);
     res.send(302, '');
 });
 
@@ -25,8 +26,7 @@ server.get(/\/client\/?.*/, restify.serveStatic({
     default: 'index.html'
 }));
 
-server.get('/' + API_PREFIX + 'hosts', hostController.list);
-server.post('/' + API_PREFIX + 'host', hostController.add);
-server.del('/' + API_PREFIX + 'host/:hostid', hostController.remove);
-server.post('/' + API_PREFIX + 'wakeup', hostController.wakeup);
-
+server.get('/' + config.api.urlPrefix + 'hosts', hostController.list);
+server.post('/' + config.api.urlPrefix + 'host', hostController.add);
+server.del('/' + config.api.urlPrefix + 'host/:hostid', hostController.remove);
+server.post('/' + config.api.urlPrefix + 'wakeup', hostController.wakeup);

@@ -4,20 +4,17 @@
 
 var restify = require('restify');
 var util = require('util');
-
-var API_PREFIX = 'api/';
-var LISTENING_PORT = 8080;
+var config = require('./config.js');
 
 
 
 var server = restify.createServer();
 server.use(restify.bodyParser());
 
-server.listen(LISTENING_PORT, function () {
-    console.info(util.format('Server listening on port %d', LISTENING_PORT));
+server.listen(config.listeningPort, function () {
+    console.info(util.format('Server listening on port %d', config.listeningPort));
 });
 
 module.exports.server = server;
 
 require('./routes.js');
-
