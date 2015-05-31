@@ -18,7 +18,7 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
         console.log('User clicked on wake up button. hostid=' + hostid);
         $http.post(API_URL + 'wakeup', {hostid: hostid}).
             success(function(data) {
-                if (data.response) {
+                if (data) {
                     console.info('Host [hostid=' + hostid + '] has been switched on.');
                 } else {
                     console.error('Host [hostid=' + hostid + '] could not be switched on.');
@@ -33,7 +33,7 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
         console.log('User clicked on remove button. hostid=' + hostid);
         $http.delete(API_URL + 'host/' + hostid).
             success(function(data) {
-                if (data.response) {
+                if (data) {
                     console.info('Host [hostid=' + hostid + '] has been removed.');
                     refreshHostList();
                 } else {
@@ -49,7 +49,7 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
         console.log('User clicked on add button. hwaddr=' + hwaddr + ', hostname=' + hostname);
         $http.post(API_URL + 'host', {"hwaddr": hwaddr, "hostname": hostname}).
             success(function(data) {
-                if (data.response) {
+                if (data) {
                     console.info('Host [hwaddr=' + hwaddr + ', hostname=' + hostname + '] has been added.');
                     refreshHostList();
                 } else {
@@ -61,4 +61,3 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
             });
     };
 }]);
-

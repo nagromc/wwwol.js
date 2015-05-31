@@ -27,6 +27,32 @@ exports.findHosts = function () {
     });
 };
 
+
+/**
+ * Promise to save a {@link Host} in database
+ * @param {string} hwaddr - the host's hardware address
+ * @param {string} name - the host name
+ * @returns {object} the {@link Host} if it has been added to database
+ */
+exports.addHost = function (hwaddr, name) {
+    return new Promise(function (resolve, reject) {
+        if (!isMac(hwaddr)) {
+            return reject(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
+        }
+
+        var hostToAdd = new model.Host(hwaddr, name);
+
+        db.insert([hostToAdd], function (err, docs) {
+            if (err) {
+                return reject(util.format('Could not add new host [%s].', JSON.stringify(hostToAdd)));
+            }
+
+            console.info('Host [%s] has been added.', JSON.stringify(hostToAdd));
+            return resolve(hostToAdd);
+        });
+    });
+};
+
 /**
  * Promise to find a hardware address into database
  * @param {string} The host's id

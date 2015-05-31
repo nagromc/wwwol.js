@@ -6,7 +6,7 @@
  * A host is represented by a hardware address and a name.
  * @class
  */
-var Host = function (hwaddr, name) {
+exports.Host = function (hwaddr, name) {
     this.hwaddr = hwaddr;
     this.name = name;
 };

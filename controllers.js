@@ -53,26 +53,14 @@ exports.listHosts = function (req, res, next) {
  */
 exports.addHost = function (req, res, next) {
     var hwaddr = req.params.hwaddr,
-        hostname = req.params.hostname,
-        response = {"response": false},
-        hostToAdd = new Host(hwaddr, hostname);
+        hostname = req.params.hostname;
 
     console.log('addHost(hwaddr=[%s];hostname=[%s])', hwaddr, hostname);
 
-    if (!isMac(hwaddr)) {
-        throw new Error(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
-    }
-
-    db.insert([hostToAdd], function (err, docs) {
-        if (err) {
-            console.error('Could not add new host [%s].', JSON.stringify(hostToAdd));
-        } else {
-            console.info('Host [%s] has been added.', JSON.stringify(hostToAdd));
-            response = {"response": true};
-        }
-
-        res.json(response);
-        next();
+    services.addHost(hwaddr, hostname).then(function (result) {
+        sendResponse(result.hwaddr, res, next);
+    }).catch(function (error) {
+        handleError(error, res);
     });
 };
 
