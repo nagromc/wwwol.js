@@ -54,6 +54,25 @@ exports.addHost = function (hwaddr, name) {
 };
 
 /**
+ * Promise to update a {@link Host} in database
+ * @param {string} hostid - host's id
+ * @param {string} hostname - the new host name
+ * @returns {object} the {@link Host} if it has been added to database
+ */
+exports.updateHost = function (hostid, hostname) {
+    return new Promise(function (resolve, reject) {
+        db.update({_id: hostid}, { $set: {name: hostname} }, {}, function (err, numReplaced) {
+            if (err) {
+                return reject(util.format('Could not update host [%s].', hostid));
+            }
+
+            console.info('Host [%s] has the new name [%s].', hostid, hostname);
+            return resolve(true);
+        });
+    });
+};
+
+/**
  * Promise to remove a {@link Host} from database
  * @param {string} hwaddr - the host's hardware address
  * @returns {boolean} true if the {@link Host} has been removed

@@ -60,4 +60,20 @@ wwwolClient.controller('hostsList', ['$scope', '$http', function($scope, $http) 
                 console.error('Error calling add host API');
             });
     };
+
+    $scope.update = function(hostid, hostname) {
+        console.log('User clicked on update button. hostid=' + hostid + ', hostname=' + hostname);
+        $http.patch(API_URL + 'host', {"hostid": hostid, "hostname": hostname}).
+            success(function(data) {
+                if (data) {
+                    console.info('Host [hostid=' + hostid + '], has a new name [' + hostname + '].');
+                    refreshHostList();
+                } else {
+                    console.error('Host [hostid=' + hostid + '] could not be updated.');
+                }
+            }).
+            error(function() {
+                console.error('Error calling update host API');
+            });
+    };
 }]);

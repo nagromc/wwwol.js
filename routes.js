@@ -28,5 +28,6 @@ server.get(/\/client\/?.*/, restify.serveStatic({
 
 server.get('/' + config.api.urlPrefix + 'hosts', hostController.listHosts);
 server.post('/' + config.api.urlPrefix + 'host', hostController.addHost);
+server.patch('/' + config.api.urlPrefix + 'host', hostController.updateHost);
 server.del('/' + config.api.urlPrefix + 'host/:hostid', hostController.removeHost);
 server.post('/' + config.api.urlPrefix + 'wakeup', hostController.wakeupHost);

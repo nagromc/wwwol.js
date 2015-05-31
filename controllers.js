@@ -63,6 +63,26 @@ exports.addHost = function (req, res, next) {
 };
 
 /**
+ * Update a {@link Host} in database.
+ * @param {string} hostid - host's id
+ * @param {string} hostname - the new host name
+ * @returns {boolean} true if the {@link Host} has been updated successfully.
+ * False otherwise.
+ */
+exports.updateHost = function (req, res, next) {
+    var hostid = req.params.hostid,
+        hostname = req.params.hostname;
+
+    console.log('updateHost(hostid=[%s];hostname=[%s])', hostid, hostname);
+
+    services.updateHost(hostid, hostname).then(function (result) {
+        sendResponse(result, res, next);
+    }).catch(function (error) {
+        handleError(error, res);
+    });
+};
+
+/**
  * Remove a host from database.
  * @param {string} host's id
  * @returns {boolean} true if the {@link Host} has been removed successfully.

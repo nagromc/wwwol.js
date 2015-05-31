@@ -25,6 +25,8 @@
             </select>
             <button ng-click="wakeup(selectedHost)">Wake up</button>
             <button ng-click="remove(selectedHost)">Remove</button>
+            <input type="text" ng-model="hostname" placeholder="New hostname"/>
+            <button ng-click="update(selectedHost, hostname)">Update</button>
         </div>
         <div>
             <p>Add a host:</p>
@@ -35,4 +37,3 @@
     </div>
 </body>
 </html>
-
