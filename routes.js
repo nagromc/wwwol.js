@@ -3,7 +3,7 @@
 "use strict";
 
 var restify = require('restify');
-var hostController = require('./controller.js');
+var hostController = require('./controllers.js');
 var server = module.parent.exports.server;
 var config = require('./config.js');
 
