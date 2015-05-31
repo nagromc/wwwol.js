@@ -17,6 +17,15 @@ var Host = function (hwaddr, name) {
 };
 
 /**
+ * Send a message to the client in case of error by the caller.
+ */
+var handleError = function (error, res) {
+    var message = 'Server internal error: ' + error;
+    console.error(message);
+    res.json(500, {error: message});
+};
+
+/**
  * List the available hosts.
  *
  * @returns {Array} List of {@link Host}.
@@ -94,22 +103,49 @@ exports.remove = function (req, res, next) {
  */
 exports.wakeup = function (req, res, next) {
     var hostid = req.params.hostid;
-    console.log(util.format('wakeup(hostid=%s)', hostid));
+    console.log(util.format('wakeup(hostid=[%s])', hostid));
 
-    db.findOne({'_id': hostid}, function (err, docs) {
-        var response = {"response": false};
+    var findHwaddr = function() {
+        return new Promise(function (resolve, reject) {
+            db.findOne({'_id': hostid}, function (error, doc) {
+                if (error) {
+                    return reject('Could not execute findOne statement: ', error);
+                }
+                if (doc === null) {
+                    return reject(util.format('Could not find doc with hostid=[%s]', hostid));
+                }
 
-        wol.wake(docs.hwaddr, {}, function (error) {
-            if (error) {
-                console.error(util.format('Could not switch on host [%s].', docs.hwaddr));
-            } else {
-                console.info(util.format('Host [%s] has been switched on.', docs.hwaddr));
-                response = {"response": true};
-            }
+                console.log(util.format('Host found hwaddr=[%s]', doc.hwaddr));
 
-            res.json(response);
+                return resolve(doc.hwaddr);
+            });
+        });
+    };
+
+    var wakeupHost = function (hwaddr) {
+        return new Promise(function (resolve,reject) {
+            console.log(util.format('Trying to wake up host [%s]', hwaddr));
+
+            wol.wake(hwaddr, function (error) {
+                if (error) {
+                    return reject(util.format('Could not switch on host [%s].', hwaddr));
+                }
+
+                console.info(util.format('Host [%s] has been switched on.', hwaddr));
+                return resolve(hwaddr);
+            });
+        });
+    };
+
+    var sendResponse = function (hwaddr) {
+        return new Promise(function (resolve,reject) {
+            console.log('Sending response of wakeup to client');
+            res.json(true);
             next();
         });
+    };
+
+    findHwaddr().then(wakeupHost).then(sendResponse).catch(function (error) {
+        handleError(error, res);
     });
 };
-
