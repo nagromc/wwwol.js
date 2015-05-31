@@ -30,7 +30,9 @@ var handleError = function (error, res) {
  *
  * @returns {Array} List of {@link Host}.
  */
-exports.list = function (req, res, next) {
+exports.listHosts = function (req, res, next) {
+    console.log('listHosts()');
+
     db.find({}, function (err, docs) {
         var hosts = docs;
 
@@ -45,13 +47,13 @@ exports.list = function (req, res, next) {
  * @returns {boolean} true if the {@link Host} has been added successfully.
  * False otherwise.
  */
-exports.add = function (req, res, next) {
+exports.addHost = function (req, res, next) {
     var hwaddr = req.params.hwaddr,
         hostname = req.params.hostname,
         response = {"response": false},
         hostToAdd = new Host(hwaddr, hostname);
 
-    console.log('addHost(hwaddr=%s;hostname=%s)', hwaddr, hostname);
+    console.log('addHost(hwaddr=[%s];hostname=[%s])', hwaddr, hostname);
 
     if (!isMac(hwaddr)) {
         throw new Error(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
@@ -76,9 +78,9 @@ exports.add = function (req, res, next) {
  * @returns {boolean} true if the {@link Host} has been removed successfully.
  * False otherwise.
  */
-exports.remove = function (req, res, next) {
+exports.removeHost = function (req, res, next) {
     var hostid = req.params.hostid;
-    console.log('remove(hostid=%s)', hostid);
+    console.log('removeHost(hostid=[%s])', hostid);
 
     db.remove({'_id': hostid}, {}, function (err, numRemoved) {
         var response = {"response": false};
@@ -100,11 +102,11 @@ exports.remove = function (req, res, next) {
  * @param {string} host's id
  * @returns {boolean} true if the magic packet has been sent successfully.
  */
-exports.wakeup = function (req, res, next) {
+exports.wakeupHost = function (req, res, next) {
     var hostid = req.params.hostid;
-    console.log('wakeup(hostid=[%s])', hostid);
+    console.log('wakeupHost(hostid=[%s])', hostid);
 
-    var findHwaddr = function() {
+    var findHwaddr = function () {
         return new Promise(function (resolve, reject) {
             db.findOne({'_id': hostid}, function (error, doc) {
                 if (error) {
@@ -122,7 +124,7 @@ exports.wakeup = function (req, res, next) {
     };
 
     var wakeupHost = function (hwaddr) {
-        return new Promise(function (resolve,reject) {
+        return new Promise(function (resolve, reject) {
             console.log('Trying to wake up host [%s]', hwaddr);
 
             wol.wake(hwaddr, function (error) {
@@ -137,7 +139,7 @@ exports.wakeup = function (req, res, next) {
     };
 
     var sendResponse = function (hwaddr) {
-        return new Promise(function (resolve,reject) {
+        return new Promise(function (resolve, reject) {
             console.log('Sending response of wakeup to client');
             res.json(true);
             next();
