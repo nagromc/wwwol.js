@@ -4,7 +4,7 @@
 
 var restify = require('restify');
 var util = require('util');
-var config = require('./config.js');
+var config = require('./server/config.js');
 
 
 
@@ -17,4 +17,4 @@ server.listen(config.listeningPort, function () {
 
 module.exports.server = server;
 
-require('./routes.js');
+require('./server/routes.js');
