@@ -18,3 +18,6 @@ server.listen(config.listeningPort, function () {
 module.exports.server = server;
 
 require('./routes.js');
+
+// update host list regularly
+require('./update-hosts.js');
