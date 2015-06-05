@@ -11,10 +11,10 @@ var model = require('./model.js');
 
 
 /**
- * Promise to find added {@link Host}
+ * Promise to find all added {@link Host}
  * @returns {object} The list of all {@link Host}
  */
-exports.findHosts = function () {
+exports.findAllHosts = function () {
     return new Promise(function (resolve, reject) {
         db.find({}, function (error, doc) {
             if (error) {
@@ -30,17 +30,14 @@ exports.findHosts = function () {
 
 /**
  * Promise to save a {@link Host} in database
- * @param {string} hwaddr - the host's hardware address
- * @param {string} name - the host name
+ * @param {string} hostToAdd - the {@link Host} to add
  * @returns {object} the {@link Host} if it has been added to database
  */
-exports.addHost = function (hwaddr, name) {
+exports.addHost = function (hostToAdd) {
     return new Promise(function (resolve, reject) {
-        if (!isMac(hwaddr)) {
-            return reject(util.format('The given hardware address ("%s") is not a valid MAC address.', hwaddr));
+        if (!isMac(hostToAdd.hwaddr)) {
+            return reject(util.format('The given hardware address ("%s") is not a valid MAC address.', hostToAdd.hwaddr));
         }
-
-        var hostToAdd = new model.Host(hwaddr, name);
 
         db.insert([hostToAdd], function (err, docs) {
             if (err) {
