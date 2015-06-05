@@ -1,0 +1,1 @@
+wwwol	ALL = (root) NOPASSWD: /usr/bin/arp-scan
