@@ -20,5 +20,5 @@ module.exports.server = server;
 require('./server/routes.js');
 
 // update host list regularly
-require('./update-hosts.js');
+require('./server/update-hosts.js');
 
