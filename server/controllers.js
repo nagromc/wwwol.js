@@ -4,6 +4,7 @@
 
 var util = require('util');
 var services = require('./services.js');
+var model = require('./model.js');
 
 
 
@@ -36,7 +37,7 @@ var handleError = function (error, res) {
 exports.listHosts = function (req, res, next) {
     console.log('listHosts()');
 
-    services.findHosts().then(function (hosts) {
+    services.findAllHosts().then(function (hosts) {
         sendResponse(hosts, res, next);
     }).catch(function (error) {
         handleError(error, res);
@@ -55,7 +56,9 @@ exports.addHost = function (req, res, next) {
 
     console.log('addHost(hwaddr=[%s];hostname=[%s])', hwaddr, hostname);
 
-    services.addHost(hwaddr, hostname).then(function (result) {
+    var hostToAdd = new model.Host(hwaddr, hostname);
+
+    services.addHost(hostToAdd).then(function (result) {
         sendResponse(result.hwaddr, res, next);
     }).catch(function (error) {
         handleError(error, res);
