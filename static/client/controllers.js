@@ -1,6 +1,6 @@
 var API_URL = '/api/';
 
-var wwwolClient = angular.module('wwwol-client', []);
+var wwwolClient = angular.module('wwwol-client', ['ngMask']);
 
 /**
  * List the {@link Host}
