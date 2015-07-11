@@ -15,7 +15,8 @@
         "url": "https://github.com/nagromc/wwwol.git"
     },
     "scripts": {
-        "postinstall": "sudo ./postinstall.sh"
+        "postinstall": "sudo ./postinstall.sh",
+        "start": "node server.js"
     },
     "dependencies": {
         "restify": "3.0.x",
