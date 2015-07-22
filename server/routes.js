@@ -22,7 +22,7 @@ server.get('/', function (req, res, next) {
  * {@link http://hostname:port/client}
  */
 server.get(/\/client\/?.*/, restify.serveStatic({
-    directory: './static',
+    directory: 'static',
     default: 'index.html'
 }));
 

@@ -1,0 +1,36 @@
+{
+    "name": "wwwol.js",
+    "version": "0.0.1",
+    "homepage": "https://github.com/nagromc/wwwol.js",
+    "authors": [
+        "Morgan Courbet"
+    ],
+    "description": "wwwol will regularly scan the local network to find hosts and help you waking them.",
+    "main": "server.js",
+    "dependencies": {
+        "angular": "~1.4.2",
+        "angular-mask": "~3.0.12",
+        "bootstrap": "~3.3.5",
+        "fontawesome": "~4.3.0",
+        "source-code-pro": "http://fonts.googleapis.com/css?family=Source+Code+Pro"
+    },
+    "moduleType": [
+        "es6",
+        "node"
+    ],
+    "keywords": [
+        "web application",
+        "wake on lan",
+        "wol",
+        "server",
+        "magic packet"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
+
