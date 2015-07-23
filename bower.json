@@ -11,8 +11,7 @@
         "angular": "~1.4.2",
         "angular-mask": "~3.0.12",
         "bootstrap": "~3.3.5",
-        "fontawesome": "~4.3.0",
-        "source-code-pro": "http://fonts.googleapis.com/css?family=Source+Code+Pro"
+        "fontawesome": "~4.3.0"
     },
     "moduleType": [
         "es6",
@@ -33,4 +32,3 @@
         "tests"
     ]
 }
-
