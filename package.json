@@ -19,11 +19,11 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "restify": "3.0.x",
-        "node-schedule": "0.2.x",
-        "arpscan": "https://github.com/nagromc/arpscan.git#master",
-        "nedb": "1.1.x",
-        "wake_on_lan": "0.0.x",
-        "is-mac": "1.0.x"
+        "arpscan": "~0.1.0",
+        "is-mac": "~1.0.0",
+        "nedb": "~1.1.2",
+        "node-schedule": "~0.2.9",
+        "restify": "~3.0.3",
+        "wake_on_lan": "~0.0.4"
     }
 }
