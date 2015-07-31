@@ -9,6 +9,7 @@ config.api.logger = {
         stream: process.stdout
     };
 config.api.cronUpdateHosts = '*/30 * * * *';
+config.api.updateHostsInterface = null;
 config.client.urlPrefix = 'client/';
 
 module.exports = config;

@@ -19,7 +19,7 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "arpscan": "~0.1.0",
+        "arpscan": "https://github.com/nagromc/arpscan.git#master",
         "is-mac": "~1.0.0",
         "nedb": "~1.1.2",
         "node-schedule": "~0.2.9",

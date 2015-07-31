@@ -56,6 +56,7 @@ var updateHosts = function () {
     console.info('Updating host list');
 
     var arpscanOpts = {
+        interface: config.api.updateHostsInterface,
         sudo: true
     };
     arpscan(onArpscanDone, arpscanOpts);
